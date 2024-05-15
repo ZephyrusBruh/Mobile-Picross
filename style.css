@@ -10,25 +10,30 @@ footer {
     background-color: black;
     color: rgb(120, 175, 238);
     padding: 20px;
-    margin-top: 10px;
-    margin-bottom: 0;
+    margin-top: 400px;
+    margin-bottom: 0%;
     width: 100%;
     left: 0%;
-    height: 70px;
+    height: 100px;
     position: absolute;
 }
 button{
-    padding: 1px;
+    padding: 3px;
+    font-size: 30px;
+}
+#testButton{
+    font-size: 25px;
 }
 select{
-    padding: 1px;
+    padding: 3px;
+    font-size: 25px;
 }
 
 body {
     background-color: #AFAFAF;
     color: darkblue;
     padding: 30px;
-    font-size: 25px;
+    font-size: 35px;
 }
 .reef {
     background-color: #212121;

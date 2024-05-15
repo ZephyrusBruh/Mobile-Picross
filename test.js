@@ -279,7 +279,7 @@ function updateProgress(){
 }
 
 function crossOuts(rows, cols){
-    
+    var hintsX;
 }
 
 
