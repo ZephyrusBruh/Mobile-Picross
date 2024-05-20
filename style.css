@@ -58,8 +58,8 @@ body {
 }
 
 .cell{
-    min-width: 25px;
-    height: 25px;
+    min-width: 50px;
+    height: 50px;
     border-right: 1px solid rgb(112, 112, 112);
     border-top: 1px solid rgb(112, 112, 112);
     border-spacing:0;

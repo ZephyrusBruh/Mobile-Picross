@@ -25,7 +25,16 @@ function updateVariable() {
     }
     VisualStyle(mode);
 }
-
+function checkLoR(){
+    var radios = document.getElementsByName('leftOrRight');
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+             mode = radios[i].value;
+        break;
+        }
+    }
+    return mode;
+}
 
 function VisualStyle(mode){
     var body = document.body;
@@ -75,6 +84,13 @@ function rebuildTable(){
 
 
 function handleCellClick(element){
+    if(checkLoR() == "Left"){
+        checkValid(element);
+    } else {
+        checkOtherValid(element);
+    }
+}
+function checkValid(element){
     if (!element.classList.contains("perfect")){
         if(element.dataset.binary == 1){
           if(element.classList != "cell rselected" && !element.classList.contains("wrong")){
@@ -98,6 +114,33 @@ function handleCellClick(element){
         updateProgress();
     }
 }
+function checkOtherValid(element){
+    if (!element.classList.contains("perfect")){
+        if(element.dataset.binary == 1){
+            if(element.classList != "cell selected"){
+                element.classList.add("wrong");
+                element.classList.add("selected");
+                if(element.classList != "cell rselected" && !element.classList.contains("wrong")){
+                    wrongguesses += 1;
+                    
+                }
+            }
+        }
+        if(element.dataset.binary == 0){
+            if(element.classList != "cell selected" && !element.classList.contains("wrong")){
+                element.classList.add("rselected");
+
+
+            }
+        }
+    
+        endGame();
+        updateWrong();
+        updateProgress();
+        crossOuts();
+    } 
+}
+/*
 function handleCellRightclick(element){
     if (!element.classList.contains("perfect")){
         if(element.dataset.binary == 1){
@@ -123,9 +166,7 @@ function handleCellRightclick(element){
         updateProgress();
         crossOuts();
     }   
-}
-
-
+}*/
 
 
 function getRandomBinary() {
@@ -281,7 +322,6 @@ function updateProgress(){
 function crossOuts(rows, cols){
     var hintsX;
 }
-
 
 
 rebuildTable();
