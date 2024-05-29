@@ -3,9 +3,8 @@ const button = document.getElementById("testButton");
 const table = document.getElementById("board");
 const dimenstionSelect = document.getElementById("dimensions");
 const cell = document.getElementsByClassName("cell")
+const seedtext = document.getElementById("seedStart")
 document.addEventListener('contextmenu', event => event.preventDefault());
-window.onload = start();
-const randomBinary = getRandomBinary();
 button.addEventListener("click", handleLeftClick);
 var guesses = 0;
 var wrongguesses = 0;
@@ -13,7 +12,11 @@ var total = 0;
 var totalguesses = 0;
 var progress = 0;
 
+var seed = cyrb128(Math.random().toString());
+// Four 32-bit component hashes provide the seed for sfc32.
+var rand = sfc32(seed[0], seed[1], seed[2], seed[3]);
 
+window.onload = start();
 // Function to update the variable based on selected radio button
 function updateVariable() {
     var radios = document.getElementsByName('Mode');
@@ -63,6 +66,10 @@ function start(){
 
 // Function to handle left click
 function handleLeftClick(event) {
+    if(seedtext.value != ""){
+        seed = cyrb128(seedtext.value);
+        rand = sfc32(seed[0], seed[1], seed[2], seed[3]);
+    }
     rebuildTable();
     updateWrong();
     updateProgress();
@@ -140,39 +147,49 @@ function checkOtherValid(element){
         crossOuts();
     } 
 }
-/*
-function handleCellRightclick(element){
-    if (!element.classList.contains("perfect")){
-        if(element.dataset.binary == 1){
-            if(element.classList != "cell selected"){
-                element.classList.add("wrong");
-                element.classList.add("selected");
-                if(element.classList != "cell rselected" && !element.classList.contains("wrong")){
-                    wrongguesses += 1;
-                    
-                }
-            }
-        }
-        if(element.dataset.binary == 0){
-            if(element.classList != "cell selected" && !element.classList.contains("wrong")){
-                element.classList.add("rselected");
 
 
-            }
-        }
-    
-        endGame();
-        updateWrong();
-        updateProgress();
-        crossOuts();
-    }   
-}*/
+
+rebuildTable();
+
+function cyrb128(str) {
+    let h1 = 1779033703, h2 = 3144134277,
+        h3 = 1013904242, h4 = 2773480762;
+    for (let i = 0, k; i < str.length; i++) {
+        k = str.charCodeAt(i);
+        h1 = h2 ^ Math.imul(h1 ^ k, 597399067);
+        h2 = h3 ^ Math.imul(h2 ^ k, 2869860233);
+        h3 = h4 ^ Math.imul(h3 ^ k, 951274213);
+        h4 = h1 ^ Math.imul(h4 ^ k, 2716044179);
+    }
+    h1 = Math.imul(h3 ^ (h1 >>> 18), 597399067);
+    h2 = Math.imul(h4 ^ (h2 >>> 22), 2869860233);
+    h3 = Math.imul(h1 ^ (h3 >>> 17), 951274213);
+    h4 = Math.imul(h2 ^ (h4 >>> 19), 2716044179);
+    h1 ^= (h2 ^ h3 ^ h4), h2 ^= h1, h3 ^= h1, h4 ^= h1;
+    return [h1>>>0, h2>>>0, h3>>>0, h4>>>0];
+  }
+  
+
+
+  
+  function sfc32(a, b, c, d) {
+  return function() {
+    a |= 0; b |= 0; c |= 0; d |= 0;
+    let t = (a + b | 0) + d | 0;
+    d = d + 1 | 0;
+    a = b ^ b >>> 9;
+    b = c + (c << 3) | 0;
+    c = (c << 21 | c >>> 11);
+    c = c + t | 0;
+    return (t >>> 0) / 4294967296;
+  }
+  }
+
 
 
 function getRandomBinary() {
-    const randomNum = Math.random();
-    const binaryValue = Math.round(randomNum);
-    return binaryValue;
+    return Math.floor(rand() * 10) % 2;
 }
 
 function buildTable(rows, cols){
