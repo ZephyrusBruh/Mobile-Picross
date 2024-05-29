@@ -24,6 +24,10 @@ button{
 #testButton{
     font-size: 25px;
 }
+#seedStart{
+    padding: 3px;
+    font-size: 25px;
+}
 select{
     padding: 3px;
     font-size: 25px;
