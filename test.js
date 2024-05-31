@@ -127,10 +127,9 @@ function checkOtherValid(element){
             if(element.classList != "cell selected"){
                 element.classList.add("wrong");
                 element.classList.add("selected");
-                if(element.classList != "cell rselected" && !element.classList.contains("wrong")){
-                    wrongguesses += 1;
-                    
-                }
+                wrongguesses += 1;
+                guesses += 1;
+                totalguesses +=1
             }
         }
         if(element.dataset.binary == 0){
