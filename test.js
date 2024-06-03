@@ -13,11 +13,9 @@ var totalguesses = 0;
 var progress = 0;
 
 var seed = cyrb128(Math.random().toString());
-// Four 32-bit component hashes provide the seed for sfc32.
 var rand = sfc32(seed[0], seed[1], seed[2], seed[3]);
 
 window.onload = start();
-// Function to update the variable based on selected radio button
 function updateVariable() {
     var radios = document.getElementsByName('Mode');
     for (var i = 0; i < radios.length; i++) {
@@ -56,15 +54,12 @@ function VisualStyle(mode){
     }
 }
 
-
 function start(){
     buildTable(10,10);
     updateVariable();
     updateProgress();
 }
 
-
-// Function to handle left click
 function handleLeftClick(event) {
     if(seedtext.value != ""){
         seed = cyrb128(seedtext.value);
@@ -74,7 +69,6 @@ function handleLeftClick(event) {
     updateWrong();
     updateProgress();
 }
-
 
 function rebuildTable(){
     let selectedDims = dimenstionSelect.value.split("x");
@@ -97,6 +91,7 @@ function handleCellClick(element){
         checkOtherValid(element);
     }
 }
+
 function checkValid(element){
     if (!element.classList.contains("perfect")){
         if(element.dataset.binary == 1){
@@ -121,6 +116,7 @@ function checkValid(element){
         updateProgress();
     }
 }
+
 function checkOtherValid(element){
     if (!element.classList.contains("perfect")){
         if(element.dataset.binary == 1){
@@ -147,10 +143,6 @@ function checkOtherValid(element){
     } 
 }
 
-
-
-rebuildTable();
-
 function cyrb128(str) {
     let h1 = 1779033703, h2 = 3144134277,
         h3 = 1013904242, h4 = 2773480762;
@@ -169,23 +161,18 @@ function cyrb128(str) {
     return [h1>>>0, h2>>>0, h3>>>0, h4>>>0];
   }
   
-
-
-  
   function sfc32(a, b, c, d) {
-  return function() {
-    a |= 0; b |= 0; c |= 0; d |= 0;
-    let t = (a + b | 0) + d | 0;
-    d = d + 1 | 0;
-    a = b ^ b >>> 9;
-    b = c + (c << 3) | 0;
-    c = (c << 21 | c >>> 11);
-    c = c + t | 0;
-    return (t >>> 0) / 4294967296;
+    return function() {
+        a |= 0; b |= 0; c |= 0; d |= 0;
+        let t = (a + b | 0) + d | 0;
+        d = d + 1 | 0;
+        a = b ^ b >>> 9;
+        b = c + (c << 3) | 0;
+        c = (c << 21 | c >>> 11);
+        c = c + t | 0;
+        return (t >>> 0) / 4294967296;
+    }
   }
-  }
-
-
 
 function getRandomBinary() {
     return Math.floor(rand() * 10) % 2;
@@ -323,12 +310,12 @@ function endGame(){
             });
         }
     }
-    
 }
 
 function updateWrong(){
     document.getElementById('wrongLbl').innerHTML = wrongguesses;
 }
+
 function updateProgress(){
     progress = totalguesses / total;
     progress = progress * 100;
@@ -338,6 +325,5 @@ function updateProgress(){
 function crossOuts(rows, cols){
     var hintsX;
 }
-
 
 rebuildTable();
